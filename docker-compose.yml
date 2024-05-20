@@ -1,0 +1,58 @@
+version: "3.3"
+
+services:
+  iomad:
+    image: elestio4test/iomad:latest
+    restart: always
+    env_file:
+      - ./.env
+    links:
+      - mysql:DB
+    volumes:
+      - ./moodleapp-data:/var/moodledata
+      - moodleapp-config:/var/www/html
+      - ./php.ini:/etc/php/8.1/apache2/php.ini
+    depends_on:
+      - mysql
+    ports:
+      - "172.17.0.1:48647:80"
+
+  mysql:
+    image: elestio/mysql:8.0
+    restart: always
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max_connections=1000 --gtid-mode=ON --enforce-gtid-consistency=ON
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "172.17.0.1:17956:3306"
+
+  pma:
+    image: elestio/phpmyadmin:latest
+    restart: always
+    links:
+      - mysql:mysql
+    ports:
+      - "172.17.0.1:8502:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${ADMIN_PASSWORD}
+      UPLOAD_LIMIT: 500M
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: ${ADMIN_PASSWORD}
+    depends_on:
+      - mysql
+
+volumes:
+  moodleapp-config:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/moodleapp-config
+      o: bind
