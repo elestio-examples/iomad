@@ -10,7 +10,7 @@ ports:
   - protocol: "HTTPS"
     targetProtocol: "HTTP"
     listeningPort: "60345"
-    targetPort: "34892"
+    targetPort: "13779"
     targetIP: "172.17.0.1"
     public: true
     path: "/"
@@ -47,6 +47,12 @@ environments:
     value: "https://[CI_CD_DOMAIN]"
   - key: "SSL_PROXY"
     value: "true"
+  - key: "SMTPHOSTS"
+    value: "172.17.0.1:25"
+  - key: "SMTPAUTHTYPE"
+    value: "PLAIN"
+  - key: "NOREPLYADDRESS"
+    value: "[DOMAIN]@vm.elestio.app"
 
 config:
   runTime: "dockerCompose"

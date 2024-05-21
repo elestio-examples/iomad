@@ -10,8 +10,9 @@ services:
       - mysql:DB
     volumes:
       - ./moodleapp-data:/var/moodledata
-      - moodleapp-config:/var/www/html
       - ./php.ini:/etc/php/8.1/apache2/php.ini
+      - ./config.php:/var/www/html/config.php
+      - ./index.php:/var/www/html/admin/index.php
     depends_on:
       - mysql
     ports:
@@ -37,7 +38,7 @@ services:
     links:
       - mysql:mysql
     ports:
-      - "172.17.0.1:8502:80"
+      - "172.17.0.1:13779:80"
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
