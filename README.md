@@ -13,7 +13,7 @@ Deploy IOMAD server with CI/CD on Elestio
 You can open IOMAD here:
 
     URL: https://[CI_CD_DOMAIN]
-    email: [ADMIN_EMAIL]
+    email: admin
     password: [ADMIN_PASSWORD]
 
 You can open phpMyAdmin here:

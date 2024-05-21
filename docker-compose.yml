@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   iomad:
-    image: elestio4test/iomad:latest
+    image: elestio4test/iomad:${SOFTWARE_VERSION_TAG}
     restart: always
     env_file:
       - ./.env
@@ -49,11 +49,3 @@ services:
       MYSQL_ROOT_PASSWORD: ${ADMIN_PASSWORD}
     depends_on:
       - mysql
-
-volumes:
-  moodleapp-config:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${PWD}/moodleapp-config
-      o: bind
